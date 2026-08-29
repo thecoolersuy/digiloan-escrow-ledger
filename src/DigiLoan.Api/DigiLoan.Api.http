@@ -1,0 +1,6 @@
+@DigiLoan.Api_HostAddress = http://localhost:5288
+
+GET {{DigiLoan.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

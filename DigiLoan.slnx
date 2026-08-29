@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DigiLoan.Api/DigiLoan.Api.csproj" />
+    <Project Path="src/DigiLoan.Application/DigiLoan.Application.csproj" />
+    <Project Path="src/DigiLoan.Domain/DigiLoan.Domain.csproj" />
+    <Project Path="src/DigiLoan.Infrastructure/DigiLoan.Infrastructure.csproj" />
+  </Folder>
+</Solution>
