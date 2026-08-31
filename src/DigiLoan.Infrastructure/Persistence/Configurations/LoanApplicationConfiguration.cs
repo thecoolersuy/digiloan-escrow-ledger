@@ -9,7 +9,7 @@ public class LoanApplicationConfiguration : IEntityTypeConfiguration<LoanApplica
     {
         builder.Property(e => e.RequestedAmount).HasColumnType("decimal(18,2)");
 
-        builder.Property(e => e.Status).HasConversion<string>().HasMaxLength(10);
+        builder.Property(e => e.Status).HasConversion<string>().HasMaxLength(20);
 
         builder.Property(l => l.RiskScore).HasColumnType("decimal(18,2)");
 

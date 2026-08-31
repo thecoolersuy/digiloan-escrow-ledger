@@ -180,7 +180,7 @@ namespace DigiLoan.Infrastructure.Migrations
                     SourceAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DestinationAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TransactionType = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    TransactionType = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -208,7 +208,7 @@ namespace DigiLoan.Infrastructure.Migrations
                     UserAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RequestedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     RiskScore = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>

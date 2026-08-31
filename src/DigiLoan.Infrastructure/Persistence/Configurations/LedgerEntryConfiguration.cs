@@ -11,7 +11,7 @@ public class LedgerEntryConfiguration : IEntityTypeConfiguration<LedgerEntry>
     {
         builder.Property(a => a.Amount).HasColumnType("decimal(18,2)");
 
-        builder.Property(a => a.TransactionType).HasConversion<string>().HasMaxLength(10);
+        builder.Property(a => a.TransactionType).HasConversion<string>().HasMaxLength(30);
 
         builder.HasOne(a => a.SourceAccount)
             .WithMany(a => a.OutgoingEntries)

@@ -39,8 +39,8 @@ namespace DigiLoan.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<Guid>("UserAccountId")
                         .HasColumnType("uniqueidentifier");
@@ -171,8 +171,8 @@ namespace DigiLoan.Infrastructure.Migrations
 
                     b.Property<string>("TransactionType")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
