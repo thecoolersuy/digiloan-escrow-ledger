@@ -8,11 +8,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace DigiLoan.Infrastructure.Identity;
 
-public class JwtTokenGenerator : ITokenService
+public class JwtTokenService : ITokenService
 {
     private readonly IConfiguration _configuration;
 
-    public JwtTokenGenerator(IConfiguration configuration)
+    public JwtTokenService(IConfiguration configuration)
     {
         _configuration = configuration;
     }

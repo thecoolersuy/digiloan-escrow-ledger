@@ -1,4 +1,4 @@
-using Digiloan.Infrastructure.Identity;
+using DigiLoan.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using DigiLoan.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

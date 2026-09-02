@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Digiloan.Infrastructure.Identity;
+namespace DigiLoan.Infrastructure.Identity;
 
 public class ApplicationUser : IdentityUser<Guid> { }
