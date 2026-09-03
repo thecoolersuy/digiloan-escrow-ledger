@@ -5,7 +5,7 @@ using DigiLoan.Infrastructure.Identity;
 using DigiLoan.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace DigiLoan.Api.Controllers;
 
@@ -94,5 +94,15 @@ public class AuthController : ControllerBase
             Email = loginData.Email,
             ExpiresAtUtc = DateTime.UtcNow.AddMinutes(60),
         });
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        var userId = User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
+        var email = User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Email)?.Value;
+
+        return Ok(new { userId, email });
     }
 }
