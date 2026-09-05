@@ -6,7 +6,7 @@ public interface ILoanApplicationRepository
 {
     Task AddAsync(LoanApplication application);
 
-    Task<LoanApplication> GetByIdAsync(Guid id);
+    Task<LoanApplication?> GetByIdAsync(Guid id);
 
     Task<List<LoanApplication>> GetByAccountIdAsync(Guid accountId);
 }

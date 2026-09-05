@@ -1,0 +1,24 @@
+using DigiLoan.Domain.Entities;
+using DigiLoan.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+
+namespace DigiLoan.Infrastructure.Repositories;
+
+public class UserAccountRepositories
+{
+    private readonly AppDbContext _context;
+
+    public UserAccountRepositories(AppDbContext context)
+    {
+        _context = context;
+    }
+
+    public Task<UserAccount?> GetByUserIdAsync(Guid userId) =>
+    _context.UserAccounts.FirstOrDefaultAsync(e => e.UserId == userId);
+
+    public Task<UserAccount?> GetByAccountIdAsync(Guid accountId) =>
+     _context.UserAccounts.FirstOrDefaultAsync(e => e.Id == accountId);
+
+    public void Update(UserAccount account) =>
+     _context.UserAccounts.Update(account);
+}
