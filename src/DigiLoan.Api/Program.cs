@@ -11,6 +11,7 @@ using Scalar.AspNetCore;
 using DigiLoan.Api.Extensions;
 using DigiLoan.Infrastructure.Repositories;
 using DigiLoan.Domain.Entities;
+using DigiLoan.Application.Services;
 
 
 
@@ -84,6 +85,7 @@ builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>();
 builder.Services.AddScoped<ILedgerEntryRepository, LedgerEntryRepository>();
 builder.Services.AddScoped<ILoanApplicationRepository, LoanApplicationRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IDataSeederService, DataSeederService>();
 
 
 
@@ -143,7 +145,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
+
+
 
 app.Run();

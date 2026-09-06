@@ -48,12 +48,14 @@ public class DataSeederService : IDataSeederService
                 var amount = random.Next(100, 2500);
                 totalSpent += amount;
 
+
                 var isUtility = day % 7 == 0;
 
                 entries.Add(new LedgerEntry
                 {
                     SourceAccountId = account.Id,
                     DestinationAccountId = isUtility ? SystemAccounts.UtilityProvider : SystemAccounts.MerchantPool,
+                    Amount = amount,
                     TransactionType = isUtility ? Domain.Enums.TransactionType.UtilityBill : Domain.Enums.TransactionType.QrPayment,
                     CreatedAtUtc = DateTime.UtcNow.AddDays(-day)
                 });

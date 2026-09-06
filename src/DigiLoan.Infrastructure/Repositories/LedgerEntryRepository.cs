@@ -36,6 +36,7 @@ public class LedgerEntryRepository : ILedgerEntryRepository
         return Task.CompletedTask;
     }
 
+
     public async Task DeleteAllForAccountAsync(Guid accountId)
     {
         var entries = await _context.LedgerEntries.Where(e => e.SourceAccountId == accountId || e.DestinationAccountId == accountId).ToListAsync();

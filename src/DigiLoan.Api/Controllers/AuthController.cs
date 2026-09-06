@@ -96,13 +96,5 @@ public class AuthController : ControllerBase
         });
     }
 
-    [Authorize]
-    [HttpGet("me")]
-    public IActionResult Me()
-    {
-        var userId = User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
-        var email = User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Email)?.Value;
 
-        return Ok(new { userId, email });
-    }
 }
