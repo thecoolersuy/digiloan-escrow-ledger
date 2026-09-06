@@ -1,14 +1,15 @@
+using DigiLoan.Application.Common.Interfaces;
 using DigiLoan.Domain.Entities;
 using DigiLoan.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace DigiLoan.Infrastructure.Repositories;
 
-public class UserAccountRepositories
+public class UserAccountRepository: IUserAccountRepository
 {
     private readonly AppDbContext _context;
 
-    public UserAccountRepositories(AppDbContext context)
+    public UserAccountRepository(AppDbContext context)
     {
         _context = context;
     }

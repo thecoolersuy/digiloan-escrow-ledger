@@ -9,6 +9,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 using DigiLoan.Api.Extensions;
+using DigiLoan.Infrastructure.Repositories;
+using DigiLoan.Domain.Entities;
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,6 +80,12 @@ builder.Services.AddAuthentication(options =>
  });
 
 builder.Services.AddAuthorization();
+builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>();
+builder.Services.AddScoped<ILedgerEntryRepository, LedgerEntryRepository>();
+builder.Services.AddScoped<ILoanApplicationRepository, LoanApplicationRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
 
 
 
@@ -86,7 +97,38 @@ builder.Services.AddOpenApi(options =>
     options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
 });
 
+
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    var systemAccounts = new[]
+    {
+        DigiLoan.Domain.Common.SystemAccounts.Employer,
+        DigiLoan.Domain.Common.SystemAccounts.MerchantPool,
+        DigiLoan.Domain.Common.SystemAccounts.UtilityProvider,
+        DigiLoan.Domain.Common.SystemAccounts.EscrowAccount
+    };
+
+    foreach (var id in systemAccounts)
+    {
+        var exists = await db.UserAccounts.AnyAsync(e => e.Id == id);
+        if (!exists)
+        {
+            db.UserAccounts.Add(new UserAccount
+            {
+                Id = id,
+                UserId = Guid.Empty,
+                AccountNumber = $"SYS-{id.ToString()[^4..]}",
+                CurrentBalance = 0
+            });
+        }
+    }
+    await db.SaveChangesAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

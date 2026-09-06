@@ -13,6 +13,6 @@ public interface ILedgerEntryRepository
     /// is deleted its entries should be there, to maintain balance sheets , this delete method is
     /// only there for deleting the seeded data and reseting howeveer it should not be in deployment
 
-    void DeleteAllForAccountAsync(Guid accountId);
+    Task DeleteAllForAccountAsync(Guid accountId);
 
 }

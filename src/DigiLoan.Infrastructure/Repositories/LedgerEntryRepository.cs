@@ -1,9 +1,11 @@
+using DigiLoan.Application.Common.Interfaces;
 using DigiLoan.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace DigiLoan.Infrastructure.Repositories;
 
-public class LedgerEntryRepository
+public class LedgerEntryRepository : ILedgerEntryRepository
+
 {
     private readonly AppDbContext _context;
 

@@ -1,10 +1,11 @@
+using DigiLoan.Application.Common.Interfaces;
 using DigiLoan.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace DigiLoan.Infrastructure.Repositories;
 
-public class UnitOfWork
+public class UnitOfWork : IUnitOfWork
 {
 
     private readonly AppDbContext _context;

@@ -1,10 +1,11 @@
+using DigiLoan.Application.Common.Interfaces;
 using DigiLoan.Domain.Entities;
 using DigiLoan.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace DigiLoan.Infrastructure.Repositories;
 
-public class LoanApplicationRepository
+public class LoanApplicationRepository: ILoanApplicationRepository
 {
     private readonly AppDbContext _context;
 
