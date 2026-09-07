@@ -86,6 +86,7 @@ builder.Services.AddScoped<ILedgerEntryRepository, LedgerEntryRepository>();
 builder.Services.AddScoped<ILoanApplicationRepository, LoanApplicationRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDataSeederService, DataSeederService>();
+builder.Services.AddScoped<ICreditScoringService, CreditScoringService>();
 
 
 
