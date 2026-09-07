@@ -89,10 +89,6 @@ builder.Services.AddScoped<IDataSeederService, DataSeederService>();
 builder.Services.AddScoped<ICreditScoringService, CreditScoringService>();
 
 
-
-
-
-
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options =>
@@ -113,7 +109,8 @@ using (var scope = app.Services.CreateScope())
         DigiLoan.Domain.Common.SystemAccounts.Employer,
         DigiLoan.Domain.Common.SystemAccounts.MerchantPool,
         DigiLoan.Domain.Common.SystemAccounts.UtilityProvider,
-        DigiLoan.Domain.Common.SystemAccounts.EscrowAccount
+        DigiLoan.Domain.Common.SystemAccounts.EscrowAccount,
+        DigiLoan.Domain.Common.SystemAccounts.OpeningBalance
     };
 
     foreach (var id in systemAccounts)

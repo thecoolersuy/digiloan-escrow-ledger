@@ -1,8 +1,8 @@
 using DigiLoan.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using DigiLoan.Domain.Enums;
 
 namespace DigiLoan.Api.Controllers;
 
@@ -20,8 +20,8 @@ public class DevController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("seed-date")]
-    public async Task<IActionResult> SeedData()
+    [HttpPost("seed-data")]
+    public async Task<IActionResult> SeedData([FromQuery] SeedProfile profile = SeedProfile.Spender)
     {
         if (!_environment.IsDevelopment())
         {
@@ -31,7 +31,7 @@ public class DevController : ControllerBase
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userIdClaim is null || !Guid.TryParse(userIdClaim, out var userId))
             return Unauthorized();
-        await _seederService.SeedAsync(userId);
+        await _seederService.SeedAsync(userId, profile);
         return Ok(new { mesage = "Seed data generated successfully" });
 
     }

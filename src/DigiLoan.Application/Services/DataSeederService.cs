@@ -1,6 +1,6 @@
-using System.Transactions;
 using DigiLoan.Application.Common.Interfaces;
 using DigiLoan.Domain.Common;
+using DigiLoan.Domain.Enums;
 
 namespace DigiLoan.Application.Services;
 
@@ -9,6 +9,7 @@ public class DataSeederService : IDataSeederService
     private readonly IUserAccountRepository _userAccount;
     private readonly ILedgerEntryRepository _ledgerEntry;
     private readonly IUnitOfWork _unitOfWork;
+    private const decimal OpeningBalanceAmount = 15000m;
 
 
     public DataSeederService(
@@ -22,7 +23,7 @@ public class DataSeederService : IDataSeederService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task SeedAsync(Guid userId)
+    public async Task SeedAsync(Guid userId, SeedProfile profile = SeedProfile.Spender)
     {
         var account = await _userAccount.GetByUserIdAsync(userId) ?? throw new InvalidOperationException("No account found for this user");
 
@@ -35,37 +36,61 @@ public class DataSeederService : IDataSeederService
 
             entries.Add(new LedgerEntry
             {
+                SourceAccountId = SystemAccounts.OpeningBalance,
+                DestinationAccountId = account.Id,
+                Amount = OpeningBalanceAmount,
+                TransactionType = TransactionType.OpeningBalance,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-30)
+            });
+            entries.Add(new LedgerEntry
+            {
                 SourceAccountId = SystemAccounts.Employer,
                 DestinationAccountId = account.Id,
                 Amount = 50000m,
-                TransactionType = Domain.Enums.TransactionType.SalaryCredit,
+                TransactionType = TransactionType.SalaryCredit,
                 CreatedAtUtc = DateTime.UtcNow.AddDays(-25)
             });
 
-            decimal totalSpent = 0m;
+            var (minDaily, maxDaily) = profile switch
+            {
+                SeedProfile.Saver => (100, 800),
+                SeedProfile.Spender => (6000, 8000),
+                _ => throw new ArgumentOutOfRangeException($"Unknown seed profile type.")
+            };
+
+            decimal runningBalance = 0m;
             for (int day = 30; day >= 1; day--)
             {
-                var amount = random.Next(100, 2500);
-                totalSpent += amount;
+                runningBalance += entries
+                    .Where(e => e.DestinationAccountId == account.Id
+                                && e.CreatedAtUtc.Date == DateTime.UtcNow.AddDays(-day).Date)
+                    .Sum(e => e.Amount);
 
+                var desiredSpend = random.Next(minDaily, maxDaily);
 
-                var isUtility = day % 7 == 0;
+                var actualSpend = Math.Min(desiredSpend, runningBalance);
 
-                entries.Add(new LedgerEntry
+                if (actualSpend > 0)
                 {
-                    SourceAccountId = account.Id,
-                    DestinationAccountId = isUtility ? SystemAccounts.UtilityProvider : SystemAccounts.MerchantPool,
-                    Amount = amount,
-                    TransactionType = isUtility ? Domain.Enums.TransactionType.UtilityBill : Domain.Enums.TransactionType.QrPayment,
-                    CreatedAtUtc = DateTime.UtcNow.AddDays(-day)
-                });
+                    runningBalance -= actualSpend;
+
+                    var isUtility = day % 7 == 0;
+
+                    entries.Add(new LedgerEntry
+                    {
+                        SourceAccountId = account.Id,
+                        DestinationAccountId = isUtility ? SystemAccounts.UtilityProvider : SystemAccounts.MerchantPool,
+                        Amount = actualSpend,
+                        TransactionType = isUtility ? TransactionType.UtilityBill : TransactionType.QrPayment,
+                        CreatedAtUtc = DateTime.UtcNow.AddDays(-day)
+                    });
+                }
             }
 
             await _ledgerEntry.AddRangeAsync(entries);
 
-            account.CurrentBalance = 50000m - totalSpent;
+            account.CurrentBalance = runningBalance;
             _userAccount.Update(account);
-
         });
 
 

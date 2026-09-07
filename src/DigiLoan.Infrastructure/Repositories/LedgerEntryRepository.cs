@@ -16,7 +16,7 @@ public class LedgerEntryRepository : ILedgerEntryRepository
 
     public Task<List<LedgerEntry>> GetByAccountIdAsync(Guid accountId, int lastNDays)
     {
-        var cutoff = DateTime.UtcNow.AddDays(-lastNDays);
+        var cutoff = DateTime.UtcNow.Date.AddDays(-lastNDays);
 
         return _context.LedgerEntries.Where(e => (e.SourceAccountId == accountId || e.DestinationAccountId == accountId)
                           && e.CreatedAtUtc >= cutoff)
