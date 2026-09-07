@@ -35,7 +35,4 @@ public class DevController : ControllerBase
         return Ok(new { mesage = "Seed data generated successfully" });
 
     }
-
-
-
 }
