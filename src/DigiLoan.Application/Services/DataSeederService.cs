@@ -23,7 +23,7 @@ public class DataSeederService : IDataSeederService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task SeedAsync(Guid userId, SeedProfile profile = SeedProfile.Spender)
+    public async Task SeedAsync(Guid userId, SeedProfile profile)
     {
         var account = await _userAccount.GetByUserIdAsync(userId) ?? throw new InvalidOperationException("No account found for this user");
 
@@ -51,12 +51,10 @@ public class DataSeederService : IDataSeederService
                 CreatedAtUtc = DateTime.UtcNow.AddDays(-25)
             });
 
-            var (minDaily, maxDaily) = profile switch
+            if (profile is not SeedProfile.Saver and not SeedProfile.Spender)
             {
-                SeedProfile.Saver => (100, 800),
-                SeedProfile.Spender => (6000, 8000),
-                _ => throw new ArgumentOutOfRangeException($"Unknown seed profile type.")
-            };
+                throw new ArgumentOutOfRangeException(nameof(profile), profile, "Unknown seed profile type.");
+            }
 
             decimal runningBalance = 0m;
             for (int day = 30; day >= 1; day--)
@@ -66,7 +64,13 @@ public class DataSeederService : IDataSeederService
                                 && e.CreatedAtUtc.Date == DateTime.UtcNow.AddDays(-day).Date)
                     .Sum(e => e.Amount);
 
-                var desiredSpend = random.Next(minDaily, maxDaily);
+                var desiredSpend = profile == SeedProfile.Saver
+                    ? random.Next(100, 801)
+                    : day >= 26
+                        ? random.Next(2600, 2801)
+                        : day >= 22
+                            ? random.Next(7500, 8001)
+                            : random.Next(700, 851);
 
                 var actualSpend = Math.Min(desiredSpend, runningBalance);
 

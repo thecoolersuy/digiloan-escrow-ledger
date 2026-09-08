@@ -21,7 +21,7 @@ public class DevController : ControllerBase
 
     [Authorize]
     [HttpPost("seed-data")]
-    public async Task<IActionResult> SeedData([FromQuery] SeedProfile profile = SeedProfile.Spender)
+    public async Task<IActionResult> SeedData([FromQuery] SeedProfile profile)
     {
         if (!_environment.IsDevelopment())
         {
