@@ -12,6 +12,7 @@ using DigiLoan.Api.Extensions;
 using DigiLoan.Infrastructure.Repositories;
 using DigiLoan.Domain.Entities;
 using DigiLoan.Application.Services;
+using DigiLoan.Api.Middleware;
 
 
 
@@ -88,6 +89,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDataSeederService, DataSeederService>();
 builder.Services.AddScoped<ICreditScoringService, CreditScoringService>();
 builder.Services.AddScoped<ILoanDisbursementService, LoanDisbursementService>();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 
 
 builder.Services.AddControllers();
@@ -141,7 +145,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
