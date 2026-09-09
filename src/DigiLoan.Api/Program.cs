@@ -104,6 +104,7 @@ builder.Services.AddOpenApi(options =>
 
 
 var app = builder.Build();
+app.UseExceptionHandler();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -145,7 +146,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseExceptionHandler();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

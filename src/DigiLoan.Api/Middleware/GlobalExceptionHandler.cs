@@ -7,9 +7,9 @@ namespace DigiLoan.Api.Middleware;
 
 public class GlobalExceptionHandler : IExceptionHandler
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<GlobalExceptionHandler> _logger;
 
-    public GlobalExceptionHandler(ILogger logger)
+    public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
     {
         _logger = logger;
     }
@@ -26,11 +26,6 @@ public class GlobalExceptionHandler : IExceptionHandler
         {
             statusCode = 400;
             title = "BadRequest";
-        }
-        else if (exception is UnauthorizedAccessException)
-        {
-            statusCode = 401;
-            title = "Unauthorized";
         }
         else if (exception is ConcurrencyException)
         {

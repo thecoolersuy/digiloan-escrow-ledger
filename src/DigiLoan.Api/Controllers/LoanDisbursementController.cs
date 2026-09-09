@@ -27,19 +27,8 @@ public class LoanDisbursementController : ControllerBase
             return Unauthorized();
         }
 
-        try
-        {
-            var result = await _disbursementService.DisburseLoanAsync(userId, request);
-            return Ok(result);
-        }
-        catch (ConcurrencyException error)
-        {
-            return Conflict(error.Message);
-        }
-        catch (InvalidOperationException error)
-        {
-            return BadRequest(error.Message);
-        }
+        var result = await _disbursementService.DisburseLoanAsync(userId, request);
+        return Ok(result);
     }
 
 }
