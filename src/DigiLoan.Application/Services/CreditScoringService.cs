@@ -2,6 +2,7 @@ using DigiLoan.Application.Common.Interfaces;
 using DigiLoan.Application.Features.LoanEligibility;
 using DigiLoan.Domain.Entities;
 using DigiLoan.Domain.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace DigiLoan.Application.Services;
 
@@ -12,10 +13,13 @@ public class CreditScoringService : ICreditScoringService
     private readonly IUserAccountRepository _account;
     private readonly ILedgerEntryRepository _ledger;
 
-    public CreditScoringService(IUserAccountRepository account, ILedgerEntryRepository ledger)
+    private readonly ILogger<CreditScoringService> _logger;
+
+    public CreditScoringService(IUserAccountRepository account, ILedgerEntryRepository ledger, ILogger<CreditScoringService> logger)
     {
         _account = account;
         _ledger = ledger;
+        _logger = logger;
     }
 
     public async Task<EligibilityResult> EvaluateResultAsync(Guid userId)
@@ -51,7 +55,7 @@ public class CreditScoringService : ICreditScoringService
         result.CreditScore = CalculateCreditScore(result.HasSalaryHistory, result.AverageDailyBalance, totalInflow, totalOutflow, minimumAverageDailyBalance);
 
         result.MaxApprovedAmount = result.IsEligible ? Math.Round(result.AverageDailyBalance * 0.5m, MidpointRounding.ToZero) : 0m;
-
+        _logger.LogInformation("Eligibility evaluated for account {AccountId} : eligible={IsEligible}", account.Id, result.IsEligible);
         return result;
 
     }

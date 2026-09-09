@@ -1,6 +1,7 @@
 using DigiLoan.Application.Common.Interfaces;
 using DigiLoan.Domain.Common;
 using DigiLoan.Domain.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace DigiLoan.Application.Services;
 
@@ -9,23 +10,30 @@ public class DataSeederService : IDataSeederService
     private readonly IUserAccountRepository _userAccount;
     private readonly ILedgerEntryRepository _ledgerEntry;
     private readonly IUnitOfWork _unitOfWork;
+
+    private readonly ILogger<DataSeederService> _logger;
+
+
     private const decimal OpeningBalanceAmount = 15000m;
 
 
     public DataSeederService(
         IUserAccountRepository userAccount,
         ILedgerEntryRepository ledgerEntry,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        ILogger<DataSeederService> logger
     )
     {
         _userAccount = userAccount;
         _ledgerEntry = ledgerEntry;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task SeedAsync(Guid userId, SeedProfile profile)
     {
         var account = await _userAccount.GetByUserIdAsync(userId) ?? throw new InvalidOperationException("No account found for this user");
+        _logger.LogInformation("Seeding {Profile} profile for account {AccountId}", profile, account.Id);
 
         await _unitOfWork.ExecuteInTransactionAsync(async () =>
         {
@@ -96,6 +104,7 @@ public class DataSeederService : IDataSeederService
             account.CurrentBalance = runningBalance;
             _userAccount.Update(account);
         });
+        _logger.LogInformation("Seed complete for account {AccountId}", account.Id);
 
 
     }

@@ -4,6 +4,7 @@ using DigiLoan.Application.Features.LoanEligibility;
 using DigiLoan.Domain.Entities;
 using DigiLoan.Domain.Common;
 using DigiLoan.Application.Common.Exceptions;
+using Microsoft.Extensions.Logging;
 
 
 namespace DigiLoan.Application.Services;
@@ -18,13 +19,19 @@ public class LoanDisbursementService : ILoanDisbursementService
     private readonly ICreditScoringService _creditScoringService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public LoanDisbursementService(IUserAccountRepository account, ILoanApplicationRepository application, ILedgerEntryRepository ledger, ICreditScoringService creditScoringService, IUnitOfWork unitOfWork)
+    private readonly ILogger<LoanDisbursementService> _logger;
+
+
+
+    public LoanDisbursementService(IUserAccountRepository account, ILoanApplicationRepository application, ILedgerEntryRepository ledger, ICreditScoringService creditScoringService, IUnitOfWork unitOfWork, ILogger<LoanDisbursementService> logger)
     {
         _account = account;
         _application = application;
         _ledger = ledger;
         _creditScoringService = creditScoringService;
         _unitOfWork = unitOfWork;
+        _logger = logger;
+
     }
 
     public async Task<LoanApplicationResult> DisburseLoanAsync(Guid userId, LoanApplicationRequest request)
@@ -51,6 +58,7 @@ public class LoanDisbursementService : ILoanDisbursementService
         };
 
         await _application.AddAsync(application);
+        _logger.LogInformation("Loan application {LoanApplication} created for account {AccountId}", application.Id, account.Id);
         await _unitOfWork.ExecuteInTransactionAsync(async () =>
         {
             await _ledger.AddAsync(new LedgerEntry
@@ -68,6 +76,7 @@ public class LoanDisbursementService : ILoanDisbursementService
             application.Status = LoanStatus.Disbursed;
         });
 
+        _logger.LogInformation("Loan Application {ApplicationId} disbursed.", application.Id);
         return new LoanApplicationResult
         {
             LoanApplicationId = application.Id,
