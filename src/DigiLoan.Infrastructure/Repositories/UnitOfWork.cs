@@ -1,3 +1,5 @@
+using System.Data;
+using DigiLoan.Application.Common.Exceptions;
 using DigiLoan.Application.Common.Interfaces;
 using DigiLoan.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -31,10 +33,12 @@ public class UnitOfWork : IUnitOfWork
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
-            catch
+            catch (DBConcurrencyException)
             {
                 await transaction.RollbackAsync();
-                throw;
+                throw new ConcurrencyException(
+                   "The data was modified by another request"
+                );
             }
         });
     }
