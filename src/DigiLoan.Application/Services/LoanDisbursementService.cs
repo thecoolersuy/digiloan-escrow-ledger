@@ -3,7 +3,6 @@ using DigiLoan.Application.Common.Interfaces;
 using DigiLoan.Application.Features.LoanEligibility;
 using DigiLoan.Domain.Entities;
 using DigiLoan.Domain.Common;
-using DigiLoan.Application.Common.Exceptions;
 using Microsoft.Extensions.Logging;
 
 
