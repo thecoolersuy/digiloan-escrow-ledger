@@ -6,6 +6,7 @@
     <Project Path="src/DigiLoan.Infrastructure/DigiLoan.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/DigiLoan.ArchitectureTests/DigiLoan.ArchitectureTests.csproj" />
     <Project Path="tests/DigiLoan.IntegrationTests/DigiLoan.IntegrationTests.csproj" />
     <Project Path="tests/DigiLoan.UnitTests/DigiLoan.UnitTests.csproj" />
   </Folder>

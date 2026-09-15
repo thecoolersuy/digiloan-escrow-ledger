@@ -102,6 +102,9 @@ public class LoanDisbursementServiceTests
 
         _mockCreditScoring.Setup(e => e.EvaluateResultAsync(_userId)).ReturnsAsync(new EligibilityResult { IsEligible = true, MaxApprovedAmount = 20000m });
 
+        _mockUnitWork.Setup(e => e.ExecuteInTransactionAsync(It.IsAny<Func<Task>>()))
+                     .Returns<Func<Task>>(operation => operation());
+
         var request = new LoanApplicationRequest
         {
             RequestedAmount = 15000m
@@ -130,7 +133,7 @@ public class LoanDisbursementServiceTests
         _mockCreditScoring.Setup(s => s.EvaluateResultAsync(_userId))
             .ReturnsAsync(new EligibilityResult { IsEligible = true, MaxApprovedAmount = 10000m });
 
-        _mockUnitWork.Setup(e => e.ExecuteInTransactionAsync(It.IsAny<Func<Task>>())).ThrowsAsync(new DbUpdateConcurrencyException());
+        _mockUnitWork.Setup(e => e.ExecuteInTransactionAsync(It.IsAny<Func<Task>>())).ThrowsAsync(new ConcurrencyException("The data was modified by another request"));
 
         var service = CreateService();
 

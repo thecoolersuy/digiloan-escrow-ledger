@@ -33,7 +33,7 @@ public class UnitOfWork : IUnitOfWork
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
-            catch (DBConcurrencyException)
+            catch (DbUpdateConcurrencyException)
             {
                 await transaction.RollbackAsync();
                 throw new ConcurrencyException(
