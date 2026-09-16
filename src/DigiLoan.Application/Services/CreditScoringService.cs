@@ -55,6 +55,11 @@ public class CreditScoringService : ICreditScoringService
         result.CreditScore = CalculateCreditScore(result.HasSalaryHistory, result.AverageDailyBalance, totalInflow, totalOutflow, minimumAverageDailyBalance);
 
         result.MaxApprovedAmount = result.IsEligible ? Math.Round(result.AverageDailyBalance * 0.5m, MidpointRounding.ToZero) : 0m;
+        if (result.IsEligible)
+        {
+            result.InterestRate = Math.Round(24m - (result.CreditScore / 100m * 12m), 2);
+            result.MaxLoanTenor = (int)Math.Max(1, Math.Round(result.CreditScore / 100m * 12m));
+        }
         _logger.LogInformation("Eligibility evaluated for account {AccountId} : eligible={IsEligible}", account.Id, result.IsEligible);
         return result;
 

@@ -13,6 +13,8 @@ public class LoanApplicationConfiguration : IEntityTypeConfiguration<LoanApplica
 
         builder.Property(l => l.RiskScore).HasColumnType("decimal(18,2)");
 
+        builder.Property(l => l.InterestRate).HasColumnType("decimal(5,2)");
 
+        builder.Property(l => l.RepaymentAmount).HasColumnType("decimal(18,2)");
     }
 }

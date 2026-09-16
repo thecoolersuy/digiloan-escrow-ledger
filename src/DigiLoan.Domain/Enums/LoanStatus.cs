@@ -6,4 +6,6 @@ public enum LoanStatus
     Approved,
     Rejected,
     Disbursed,
+
+    Overdue
 }

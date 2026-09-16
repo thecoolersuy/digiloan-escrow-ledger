@@ -12,4 +12,8 @@ public class EligibilityResult
     public bool HasSalaryHistory { get; set; }
 
     public List<string> Reasons { get; set; } = new();
+
+    public int MaxLoanTenor { get; set; }
+
+    public decimal InterestRate { get; set; }
 }

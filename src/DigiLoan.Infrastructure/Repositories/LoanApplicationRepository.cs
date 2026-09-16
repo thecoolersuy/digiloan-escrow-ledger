@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DigiLoan.Infrastructure.Repositories;
 
-public class LoanApplicationRepository: ILoanApplicationRepository
+public class LoanApplicationRepository : ILoanApplicationRepository
 {
     private readonly AppDbContext _context;
 
@@ -17,6 +17,12 @@ public class LoanApplicationRepository: ILoanApplicationRepository
     public Task AddAsync(LoanApplication application)
     {
         _context.LoanApplications.Add(application);
+        return Task.CompletedTask;
+    }
+
+    public Task UpdateAsync(LoanApplication application)
+    {
+        _context.LoanApplications.Update(application);
         return Task.CompletedTask;
     }
 

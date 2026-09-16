@@ -1,3 +1,5 @@
+using DigiLoan.Domain.Enums;
+
 namespace DigiLoan.Application.Features.LoanEligibility;
 
 public class LoanApplicationResult
@@ -8,4 +10,9 @@ public class LoanApplicationResult
     public decimal NewBalance { get; set; }
 
     public DateTime DisbursedAtUtc { get; set; }
+
+    public decimal RepaymentAmount { get; set; }
+    public DateTime RepaymentDate { get; set; }
+
+    public LoanStatus Status { get; set; }
 }
