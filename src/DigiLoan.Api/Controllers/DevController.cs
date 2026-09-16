@@ -11,19 +11,19 @@ namespace DigiLoan.Api.Controllers;
 public class DevController : ControllerBase
 {
     private readonly IDataSeederService _seederService;
-    private readonly IWebHostEnvironment _environment;
+    private readonly IWebHostEnvironment _env;
 
     public DevController(IDataSeederService seederService, IWebHostEnvironment environment)
     {
         _seederService = seederService;
-        _environment = environment;
+        _env = environment;
     }
 
     [Authorize]
     [HttpPost("seed-data")]
     public async Task<IActionResult> SeedData([FromQuery] SeedProfile profile)
     {
-        if (!_environment.IsDevelopment())
+        if (!_env.IsDevelopment() && !_env.IsEnvironment("Demo"))
         {
             return NotFound();
         }
