@@ -5,6 +5,7 @@ namespace DigiLoan.Domain.Entities;
 
 public class LoanApplication : BaseEntity
 {
+    public int ApplicationNumber { get; set; }
     public Guid UserAccountId { get; set; }
     public UserAccount? UserAccount { get; set; }
     public decimal RequestedAmount { get; set; }
@@ -15,4 +16,6 @@ public class LoanApplication : BaseEntity
     public decimal InterestRate { get; set; }
     public decimal RepaymentAmount { get; set; }
     public DateTime RepaymentDate { get; set; }
+
+
 }

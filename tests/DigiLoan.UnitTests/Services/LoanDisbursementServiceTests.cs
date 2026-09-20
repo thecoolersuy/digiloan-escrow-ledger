@@ -9,6 +9,7 @@ using DigiLoan.Application.Features.LoanEligibility;
 using DigiLoan.Application.Common.Exceptions;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 
 
@@ -50,12 +51,15 @@ public class LoanDisbursementServiceTests
             Id = _accountId,
         };
         _mockAccount.Setup(e => e.GetByUserIdAsync(_userId)).ReturnsAsync(account);
+        _mockApplication.Setup(e => e.GetByAccountIdAsync(_accountId)).ReturnsAsync(new List<LoanApplication>());
 
-        _mockCreditScoring.Setup(e => e.EvaluateResultAsync(_userId)).ReturnsAsync(new EligibilityResult { IsEligible = false, MaxApprovedAmount = 0m });
+        _mockCreditScoring.Setup(e => e.EvaluateResultAsync(_userId)).ReturnsAsync(new EligibilityResult { IsEligible = false, MaxApprovedAmount = 0m, MaxLoanTenor = 10 });
 
         var application = new LoanApplicationRequest
         {
-            RequestedAmount = 20000m
+            RequestedAmount = 20000m,
+            RequestedLoanTenor = 11
+
         };
 
         var service = CreateService();
@@ -75,11 +79,14 @@ public class LoanDisbursementServiceTests
         };
 
         _mockAccount.Setup(e => e.GetByUserIdAsync(_userId)).ReturnsAsync(account);
-        _mockCreditScoring.Setup(e => e.EvaluateResultAsync(_userId)).ReturnsAsync(new EligibilityResult { IsEligible = false, MaxApprovedAmount = 15000m });
+        _mockApplication.Setup(e => e.GetByAccountIdAsync(_accountId)).ReturnsAsync(new List<LoanApplication>());
+        _mockCreditScoring.Setup(e => e.EvaluateResultAsync(_userId)).ReturnsAsync(new EligibilityResult { IsEligible = false, MaxApprovedAmount = 15000m, MaxLoanTenor = 10 });
 
         var request = new LoanApplicationRequest
         {
-            RequestedAmount = 20000m
+            RequestedAmount = 20000m,
+            RequestedLoanTenor = 9
+
         };
 
         var service = CreateService();
@@ -99,15 +106,17 @@ public class LoanDisbursementServiceTests
         };
 
         _mockAccount.Setup(e => e.GetByUserIdAsync(_userId)).ReturnsAsync(account);
+        _mockApplication.Setup(e => e.GetByAccountIdAsync(_accountId)).ReturnsAsync(new List<LoanApplication>());
 
-        _mockCreditScoring.Setup(e => e.EvaluateResultAsync(_userId)).ReturnsAsync(new EligibilityResult { IsEligible = true, MaxApprovedAmount = 20000m });
+        _mockCreditScoring.Setup(e => e.EvaluateResultAsync(_userId)).ReturnsAsync(new EligibilityResult { IsEligible = true, MaxApprovedAmount = 20000m, MaxLoanTenor = 10 });
 
         _mockUnitWork.Setup(e => e.ExecuteInTransactionAsync(It.IsAny<Func<Task>>()))
                      .Returns<Func<Task>>(operation => operation());
 
         var request = new LoanApplicationRequest
         {
-            RequestedAmount = 15000m
+            RequestedAmount = 15000m,
+            RequestedLoanTenor = 9
         };
 
         var service = CreateService();
@@ -130,8 +139,9 @@ public class LoanDisbursementServiceTests
         };
 
         _mockAccount.Setup(e => e.GetByUserIdAsync(_userId)).ReturnsAsync(account);
+        _mockApplication.Setup(e => e.GetByAccountIdAsync(_accountId)).ReturnsAsync(new List<LoanApplication>());
         _mockCreditScoring.Setup(s => s.EvaluateResultAsync(_userId))
-            .ReturnsAsync(new EligibilityResult { IsEligible = true, MaxApprovedAmount = 10000m });
+            .ReturnsAsync(new EligibilityResult { IsEligible = true, MaxApprovedAmount = 10000m, MaxLoanTenor = 12 });
 
         _mockUnitWork.Setup(e => e.ExecuteInTransactionAsync(It.IsAny<Func<Task>>())).ThrowsAsync(new ConcurrencyException("The data was modified by another request"));
 
@@ -139,9 +149,41 @@ public class LoanDisbursementServiceTests
 
         var request = new LoanApplicationRequest
         {
-            RequestedAmount = 10000m
+            RequestedAmount = 10000m,
+            RequestedLoanTenor = 9
         };
         await Assert.ThrowsAsync<ConcurrencyException>(() => service.DisburseLoanAsync(_userId, request));
     }
+
+    [Fact]
+    public async Task DisburseLoanAsync_WhenRequestedLoanTenorExceededMaxLoanTenor_ThrowsInvalidOperationException()
+    {
+        var account = new UserAccount
+        {
+            UserId = _userId,
+            Id = _accountId
+        };
+        _mockApplication.Setup(e => e.GetByAccountIdAsync(_accountId)).ReturnsAsync(new List<LoanApplication>());
+
+        _mockCreditScoring.Setup(e => e.EvaluateResultAsync(_userId)).ReturnsAsync(new EligibilityResult
+        {
+            IsEligible = true,
+            MaxApprovedAmount = 15000m,
+            MaxLoanTenor = 9
+        });
+
+        var application = new LoanApplicationRequest
+        {
+            RequestedAmount = 12000m,
+            RequestedLoanTenor = 12
+        };
+
+        var service = CreateService();
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.DisburseLoanAsync(_userId, application));
+
+        _mockApplication.Verify(e => e.AddAsync(It.IsAny<LoanApplication>()), Times.Never);
+    }
+
+
 
 }

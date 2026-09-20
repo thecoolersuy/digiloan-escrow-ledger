@@ -44,7 +44,7 @@ public class AuthController : ControllerBase
 
         var user = new ApplicationUser
         {
-            UserName = registerData.Email,
+            UserName = registerData.FullName,
             Email = registerData.Email
         };
 

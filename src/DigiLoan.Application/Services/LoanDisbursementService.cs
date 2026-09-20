@@ -42,7 +42,7 @@ public class LoanDisbursementService : ILoanDisbursementService
 
         if (existingLoan is not null)
         {
-            if (existingLoan.Status == LoanStatus.Disbursed && existingLoan.RepaymentDate > DateTime.UtcNow)
+            if (existingLoan.Status == LoanStatus.Disbursed && existingLoan.RepaymentDate < DateTime.UtcNow)
             {
                 existingLoan.Status = LoanStatus.Overdue;
                 await _application.UpdateAsync(existingLoan);
@@ -75,6 +75,7 @@ public class LoanDisbursementService : ILoanDisbursementService
 
         var application = new LoanApplication
         {
+            ApplicationNumber = Random.Shared.Next(100000, 999999),
             UserAccountId = account.Id,
             UserAccount = account,
             RequestedAmount = request.RequestedAmount,
