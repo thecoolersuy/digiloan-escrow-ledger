@@ -100,10 +100,22 @@ builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactDev", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+}
 
+);
 
 
 var app = builder.Build();
+app.UseCors("AllowReactDev");
 app.UseExceptionHandler();
 
 using (var scope = app.Services.CreateScope())
@@ -127,6 +139,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
 
 
 
