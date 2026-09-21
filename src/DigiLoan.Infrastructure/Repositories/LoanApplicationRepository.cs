@@ -26,6 +26,12 @@ public class LoanApplicationRepository : ILoanApplicationRepository
         return Task.CompletedTask;
     }
 
+    public async Task DeleteAllForAccountAsync(Guid userId)
+    {
+        var applications = await _context.LoanApplications.Where(e => e.UserAccountId == userId).ToListAsync();
+        _context.LoanApplications.RemoveRange(applications);
+    }
+
     public Task<LoanApplication?> GetByIdAsync(Guid id) =>
         _context.LoanApplications.FirstOrDefaultAsync(e => e.Id == id);
 

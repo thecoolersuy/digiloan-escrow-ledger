@@ -80,6 +80,8 @@ public class LoanDisbursementService : ILoanDisbursementService
             UserAccount = account,
             RequestedAmount = request.RequestedAmount,
             RiskScore = result.CreditScore,
+            LoanTenor = request.RequestedLoanTenor,
+            InterestRate = result.InterestRate,
             Status = LoanStatus.Pending,
             RepaymentAmount = repaymentAmount,
             RepaymentDate = repaymentDate

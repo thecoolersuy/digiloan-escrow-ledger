@@ -19,17 +19,21 @@ public class AuthController : ControllerBase
     private readonly ITokenService _tokenService;
     private readonly AppDbContext _dbContext;
 
+    private readonly IDataSeederService _dataSeeder;
+
     public AuthController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         ITokenService tokenService,
-        AppDbContext dbContext
+        AppDbContext dbContext,
+        IDataSeederService dataSeeder
     )
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _tokenService = tokenService;
         _dbContext = dbContext;
+        _dataSeeder = dataSeeder;
     }
 
 
@@ -94,6 +98,41 @@ public class AuthController : ControllerBase
             Email = loginData.Email,
             ExpiresAtUtc = DateTime.UtcNow.AddMinutes(60),
         });
+    }
+
+    [HttpPost("demo-login")]
+    public async Task<IActionResult> DemoLogin([FromQuery] SeedProfile profile)
+    {
+        var email = $"demo-{profile.ToString().ToLower()}@gmail.com";
+        var fullName = $"{profile.ToString().ToLower()}";
+
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user is null)
+        {
+            user = new ApplicationUser { UserName = fullName, Email = email };
+            await _userManager.CreateAsync(user, "DemoPassword123!@#");
+
+            var account = new UserAccount
+            {
+                UserId = user.Id,
+                AccountNumber = $"DEMO-{profile}",
+                CurrentBalance = 0
+            };
+            _dbContext.UserAccounts.Add(account);
+            await _dbContext.SaveChangesAsync();
+        }
+        await _dataSeeder.SeedAsync(user.Id, profile);
+        var token = _tokenService.GenerateToken(user.Id, user.Email!);
+
+        return Ok(new AuthResponse
+        {
+            Token = token,
+            Email = user.Email!,
+            ExpiresAtUtc = DateTime.UtcNow.AddMinutes(60)
+        });
+
+
     }
 
 

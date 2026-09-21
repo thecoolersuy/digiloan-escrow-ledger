@@ -9,6 +9,7 @@ public class DataSeederService : IDataSeederService
 {
     private readonly IUserAccountRepository _userAccount;
     private readonly ILedgerEntryRepository _ledgerEntry;
+    private readonly ILoanApplicationRepository _loanApplication;
     private readonly IUnitOfWork _unitOfWork;
 
     private readonly ILogger<DataSeederService> _logger;
@@ -20,12 +21,14 @@ public class DataSeederService : IDataSeederService
     public DataSeederService(
         IUserAccountRepository userAccount,
         ILedgerEntryRepository ledgerEntry,
+        ILoanApplicationRepository loanApplication,
         IUnitOfWork unitOfWork,
         ILogger<DataSeederService> logger
     )
     {
         _userAccount = userAccount;
         _ledgerEntry = ledgerEntry;
+        _loanApplication = loanApplication;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -38,6 +41,7 @@ public class DataSeederService : IDataSeederService
         await _unitOfWork.ExecuteInTransactionAsync(async () =>
         {
             await _ledgerEntry.DeleteAllForAccountAsync(account.Id);
+            await _loanApplication.DeleteAllForAccountAsync(account.Id);
 
             var random = new Random();
             var entries = new List<LedgerEntry>();

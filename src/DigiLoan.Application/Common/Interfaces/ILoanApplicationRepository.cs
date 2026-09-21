@@ -8,6 +8,8 @@ public interface ILoanApplicationRepository
 
     Task UpdateAsync(LoanApplication application);
 
+    Task DeleteAllForAccountAsync(Guid accountId);
+
     Task<LoanApplication?> GetByIdAsync(Guid id);
 
     Task<List<LoanApplication>> GetByAccountIdAsync(Guid accountId);
