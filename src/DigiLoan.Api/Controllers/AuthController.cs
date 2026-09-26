@@ -49,7 +49,8 @@ public class AuthController : ControllerBase
         var user = new ApplicationUser
         {
             UserName = registerData.FullName,
-            Email = registerData.Email
+            Email = registerData.Email,
+            FullName = registerData.FullName,
         };
 
         var result = await _userManager.CreateAsync(user, registerData.Password);
@@ -74,6 +75,7 @@ public class AuthController : ControllerBase
         {
             Token = token,
             Email = user.Email,
+            FullName = user.FullName,
             ExpiresAtUtc = DateTime.UtcNow.AddMinutes(10)
         });
     }
@@ -96,6 +98,7 @@ public class AuthController : ControllerBase
         {
             Token = token,
             Email = loginData.Email,
+            FullName = user.FullName,
             ExpiresAtUtc = DateTime.UtcNow.AddMinutes(60),
         });
     }
@@ -129,6 +132,7 @@ public class AuthController : ControllerBase
         {
             Token = token,
             Email = user.Email!,
+            FullName = user.FullName,
             ExpiresAtUtc = DateTime.UtcNow.AddMinutes(60)
         });
 
