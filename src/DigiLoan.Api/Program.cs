@@ -89,8 +89,10 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDataSeederService, DataSeederService>();
 builder.Services.AddScoped<ICreditScoringService, CreditScoringService>();
 builder.Services.AddScoped<ILoanDisbursementService, LoanDisbursementService>();
+builder.Services.AddScoped<IAccountOverviewService, AccountOverviewService>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+
 
 
 
