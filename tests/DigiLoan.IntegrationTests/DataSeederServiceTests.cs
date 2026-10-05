@@ -36,8 +36,9 @@ public class DataSeederServiceTests
 
         var accountRepo = new UserAccountRepository(dbContext);
         var ledgerRepo = new LedgerEntryRepository(dbContext);
+        var loanApplicationRepo = new LoanApplicationRepository(dbContext);
         var unitOfWork = new UnitOfWork(dbContext);
-        var seederService = new DataSeederService(accountRepo, ledgerRepo, unitOfWork, NullLogger<DataSeederService>.Instance);
+        var seederService = new DataSeederService(accountRepo, ledgerRepo, loanApplicationRepo, unitOfWork, NullLogger<DataSeederService>.Instance);
 
         //Act
         await seederService.SeedAsync(account.UserId, Application.Common.Interfaces.SeedProfile.Saver);

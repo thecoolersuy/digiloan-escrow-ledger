@@ -43,4 +43,7 @@ public class LedgerEntryRepository : ILedgerEntryRepository
 
         _context.LedgerEntries.RemoveRange(entries);
     }
+
+
+
 }

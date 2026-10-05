@@ -1,0 +1,93 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\DigiLoan\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\DigiLoan\\src\\DigiLoan.Application\\Services\\AccountOverviewService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\DigiLoan.Application\\Services\\AccountOverviewService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\DigiLoan\\src\\DigiLoan.Application\\Common\\Interfaces\\IUserIdentityService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\DigiLoan.Application\\Common\\Interfaces\\IUserIdentityService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\DigiLoan\\src\\DigiLoan.Domain\\Common\\SystemAccounts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\DigiLoan.Domain\\Common\\SystemAccounts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\DigiLoan\\src\\DigiLoan.Infrastructure\\Identity\\UserIdentityService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\DigiLoan.Infrastructure\\Identity\\UserIdentityService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SystemAccounts.cs",
+              "DocumentMoniker": "F:\\DigiLoan\\src\\DigiLoan.Domain\\Common\\SystemAccounts.cs",
+              "RelativeDocumentMoniker": "src\\DigiLoan.Domain\\Common\\SystemAccounts.cs",
+              "ToolTip": "F:\\DigiLoan\\src\\DigiLoan.Domain\\Common\\SystemAccounts.cs",
+              "RelativeToolTip": "src\\DigiLoan.Domain\\Common\\SystemAccounts.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-05T08:49:16.356Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AccountOverviewService.cs",
+              "DocumentMoniker": "F:\\DigiLoan\\src\\DigiLoan.Application\\Services\\AccountOverviewService.cs",
+              "RelativeDocumentMoniker": "src\\DigiLoan.Application\\Services\\AccountOverviewService.cs",
+              "ToolTip": "F:\\DigiLoan\\src\\DigiLoan.Application\\Services\\AccountOverviewService.cs",
+              "RelativeToolTip": "src\\DigiLoan.Application\\Services\\AccountOverviewService.cs",
+              "ViewState": "AQIAACQAAAAAAAAAAAAAADUAAACVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-04T12:46:04.362Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IUserIdentityService.cs",
+              "DocumentMoniker": "F:\\DigiLoan\\src\\DigiLoan.Application\\Common\\Interfaces\\IUserIdentityService.cs",
+              "RelativeDocumentMoniker": "src\\DigiLoan.Application\\Common\\Interfaces\\IUserIdentityService.cs",
+              "ToolTip": "F:\\DigiLoan\\src\\DigiLoan.Application\\Common\\Interfaces\\IUserIdentityService.cs",
+              "RelativeToolTip": "src\\DigiLoan.Application\\Common\\Interfaces\\IUserIdentityService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-04T12:11:40.803Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserIdentityService.cs",
+              "DocumentMoniker": "F:\\DigiLoan\\src\\DigiLoan.Infrastructure\\Identity\\UserIdentityService.cs",
+              "RelativeDocumentMoniker": "src\\DigiLoan.Infrastructure\\Identity\\UserIdentityService.cs",
+              "ToolTip": "F:\\DigiLoan\\src\\DigiLoan.Infrastructure\\Identity\\UserIdentityService.cs",
+              "RelativeToolTip": "src\\DigiLoan.Infrastructure\\Identity\\UserIdentityService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-04T11:59:09.081Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

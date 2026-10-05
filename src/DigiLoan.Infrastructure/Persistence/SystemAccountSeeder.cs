@@ -27,7 +27,7 @@ public static class SystemAccountSeeder
                 {
                     Id = accountId,
                     UserId = Guid.Empty,
-                    AccountNumber = $"SYS-{accountId.ToString()[^4..]}",
+                    AccountNumber = SystemAccounts.GetAccountNumber(accountId),
                     CurrentBalance = 0
                 });
             }

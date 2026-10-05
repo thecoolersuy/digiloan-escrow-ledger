@@ -92,6 +92,7 @@ builder.Services.AddScoped<ILoanDisbursementService, LoanDisbursementService>();
 builder.Services.AddScoped<IAccountOverviewService, AccountOverviewService>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+builder.Services.AddScoped<IUserIdentityService, UserIdentityService>();
 
 
 

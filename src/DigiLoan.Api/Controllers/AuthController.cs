@@ -5,7 +5,7 @@ using DigiLoan.Infrastructure.Identity;
 using DigiLoan.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+
 
 namespace DigiLoan.Api.Controllers;
 

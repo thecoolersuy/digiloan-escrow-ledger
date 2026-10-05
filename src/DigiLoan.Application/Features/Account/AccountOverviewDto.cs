@@ -8,6 +8,8 @@ public class AccountOverviewDto
     public decimal TotalOutflow { get; set; }
     public decimal TotalDisbursed { get; set; }
     public List<DailyFlowDto> DailyTrend { get; set; } = new();
+
+    public List<LedgerEntryDto> RecentTransactions { get; set; } = new();
 }
 
 public class DailyFlowDto
