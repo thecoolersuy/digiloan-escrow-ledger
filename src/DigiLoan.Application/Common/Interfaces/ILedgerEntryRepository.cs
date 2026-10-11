@@ -13,5 +13,7 @@ public interface ILedgerEntryRepository
 
     Task DeleteAllForAccountAsync(Guid accountId);
 
+    Task<(List<LedgerEntry> Items, int TotalCount)> GetPaginationResultByAccountIdAsync(Guid accountId, DateTime? fromUtc, DateTime? toUtc, int page, int pageSize);
+
 
 }

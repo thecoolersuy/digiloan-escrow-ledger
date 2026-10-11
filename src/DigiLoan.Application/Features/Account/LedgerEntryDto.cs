@@ -12,6 +12,6 @@ public class LedgerEntryDto
     public string DestinationLabel { get; set; } = string.Empty;
     public string DestinationAccountNumber { get; set; } = string.Empty;
     public decimal Amount { get; set; }
-    public string TransactionType { get; set; } = string.Empty;
+    public TransactionType TransactionType { get; set; }
 
 }

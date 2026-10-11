@@ -13,6 +13,7 @@ using DigiLoan.Infrastructure.Repositories;
 using DigiLoan.Domain.Entities;
 using DigiLoan.Application.Services;
 using DigiLoan.Api.Middleware;
+using System.Text.Json.Serialization;
 
 
 
@@ -97,7 +98,13 @@ builder.Services.AddScoped<IUserIdentityService, UserIdentityService>();
 
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(
+            new JsonStringEnumConverter()
+        );
+    });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options =>
 {

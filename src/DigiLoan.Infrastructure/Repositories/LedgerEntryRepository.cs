@@ -44,6 +44,31 @@ public class LedgerEntryRepository : ILedgerEntryRepository
         _context.LedgerEntries.RemoveRange(entries);
     }
 
+    public async Task<(List<LedgerEntry> Items, int TotalCount)> GetPaginationResultByAccountIdAsync(Guid accountId, DateTime? fromUtc, DateTime? toUtc, int page, int pageSize)
+    {
+        var query = _context.LedgerEntries.AsNoTracking().Where(e => e.SourceAccountId == accountId || e.DestinationAccountId == accountId);
+
+        if (fromUtc.HasValue)
+        {
+            query = query.Where(e => e.CreatedAtUtc >= fromUtc.Value);
+        }
+        if (toUtc.HasValue)
+        {
+            query = query.Where(e => e.CreatedAtUtc <= toUtc.Value);
+        }
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(e => e.CreatedAtUtc)
+            .ThenByDescending(e => e.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
+    }
+
 
 
 }

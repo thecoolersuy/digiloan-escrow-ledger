@@ -1,8 +1,7 @@
 using DigiLoan.Application.Features.Account;
 using DigiLoan.Application.Common.Interfaces;
 using DigiLoan.Domain.Enums;
-using DigiLoan.Domain.Entities;
-using DigiLoan.Domain.Common;
+
 
 namespace DigiLoan.Application.Services;
 
@@ -47,36 +46,11 @@ public class AccountOverviewService : IAccountOverviewService
             RecentTransactions = entries
                 .OrderByDescending(e => e.CreatedAtUtc)
                 .Take(10)
-                .Select(e => MapToDto(e, account, fullName))
+                .Select(e => LedgerEntryMapper.ToDto(e, account, fullName))
                 .ToList()
         };
     }
 
-    public LedgerEntryDto MapToDto(LedgerEntry entry, UserAccount account, string fullName)
-    {
-        (string Label, string AccountNumber) GetAccountLabels(Guid id) =>
-          id == account.Id ? (fullName, account.AccountNumber)
-                           : (SystemAccounts.GetLabel(id) ?? "Unknown", SystemAccounts.GetAccountNumber(id));
-
-        var source = GetAccountLabels(entry.SourceAccountId);
-        var destination = GetAccountLabels(entry.DestinationAccountId);
-
-
-
-        return new LedgerEntryDto
-        {
-            DisplayId = $"LED-{entry.Id.ToString()[..6].ToUpper()}",
-            CreatedAtUtc = entry.CreatedAtUtc,
-            SourceLabel = source.Label,
-            SourceAccountNumber = source.AccountNumber,
-            DestinationLabel = destination.Label,
-            DestinationAccountNumber = destination.AccountNumber,
-            Amount = entry.Amount,
-            TransactionType = entry.TransactionType.ToString()
-
-
-        };
-    }
     public static List<DailyFlowDto> CalculateDailyFlow(List<LedgerEntry> entries, Guid accountId)
     {
         var dateByDay = entries.ToLookup(e => DateOnly.FromDateTime(e.CreatedAtUtc));
