@@ -14,6 +14,7 @@ using DigiLoan.Domain.Entities;
 using DigiLoan.Application.Services;
 using DigiLoan.Api.Middleware;
 using System.Text.Json.Serialization;
+using DigiLoan.Application.Interfaces;
 
 
 
@@ -94,6 +95,7 @@ builder.Services.AddScoped<IAccountOverviewService, AccountOverviewService>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddScoped<IUserIdentityService, UserIdentityService>();
+builder.Services.AddScoped<ITransactionHistoryService, TransactionHistoryService>();
 
 
 
