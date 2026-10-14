@@ -27,6 +27,16 @@ public class GlobalExceptionHandler : IExceptionHandler
             statusCode = 400;
             title = "BadRequest";
         }
+        else if (exception is IdentityValidationException)
+        {
+            statusCode = 400;
+            title = "ValidationError";
+        }
+        else if (exception is ConflictException)
+        {
+            statusCode = 409;
+            title = "Conflict";
+        }
         else if (exception is ConcurrencyException)
         {
             statusCode = 409;

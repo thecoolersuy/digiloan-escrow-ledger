@@ -96,6 +96,7 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddScoped<IUserIdentityService, UserIdentityService>();
 builder.Services.AddScoped<ITransactionHistoryService, TransactionHistoryService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 
