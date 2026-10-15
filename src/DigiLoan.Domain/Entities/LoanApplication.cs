@@ -11,11 +11,22 @@ public class LoanApplication : BaseEntity
     public decimal RequestedAmount { get; set; }
     public decimal RiskScore { get; set; }
     public LoanStatus Status { get; set; }
-
     public int LoanTenor { get; set; }
     public decimal InterestRate { get; set; }
     public decimal RepaymentAmount { get; set; }
     public DateTime RepaymentDate { get; set; }
+
+    public bool BlocksNewApplications => Status is LoanStatus.Disbursed or LoanStatus.Overdue;
+
+    public bool MarkOverdueIfPastDueDate(DateTime utcNow)
+    {
+        if (Status == LoanStatus.Disbursed && RepaymentDate < utcNow)
+        {
+            Status = LoanStatus.Overdue;
+            return true;
+        }
+        return false;
+    }
 
 
 }
