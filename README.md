@@ -108,22 +108,22 @@ DigiLoan brings these concerns together in one application, with a focus on sepa
 
 ## Requirement Mapping
 
-| Requirement | DigiLoan implementation |
-|---|---|
-| User authentication | ASP.NET Core Identity and JWT bearer authentication |
-| Protected API access | Authorization attributes and JWT validation |
-| Loan eligibility | Credit-scoring and eligibility application services |
-| Loan quotation | Loan quote workflow |
-| Loan application management | Loan application domain model and DTOs |
-| Loan disbursement | Disbursement API workflow and ledger-related operations |
-| Financial activity tracking | `LedgerEntry` and `UserAccount` domain models |
-| Dashboard summary | Account overview application service |
-| Recent transactions | Newest-first transaction selection |
-| Transaction history | Account-related ledger query |
-| Pagination | `PagedResult<T>` and repository-level pagination |
-| Date filtering | Optional date range filters in transaction queries |
-| Database persistence | Entity Framework Core and SQL Server |
-| Integration testing | `DigiLoan.IntegrationTests` and database fixture |
+| Requirement                 | DigiLoan implementation                                 |
+| --------------------------- | ------------------------------------------------------- |
+| User authentication         | ASP.NET Core Identity and JWT bearer authentication     |
+| Protected API access        | Authorization attributes and JWT validation             |
+| Loan eligibility            | Credit-scoring and eligibility application services     |
+| Loan quotation              | Loan quote workflow                                     |
+| Loan application management | Loan application domain model and DTOs                  |
+| Loan disbursement           | Disbursement API workflow and ledger-related operations |
+| Financial activity tracking | `LedgerEntry` and `UserAccount` domain models           |
+| Dashboard summary           | Account overview application service                    |
+| Recent transactions         | Newest-first transaction selection                      |
+| Transaction history         | Account-related ledger query                            |
+| Pagination                  | `PagedResult<T>` and repository-level pagination        |
+| Date filtering              | Optional date range filters in transaction queries      |
+| Database persistence        | Entity Framework Core and SQL Server                    |
+| Integration testing         | `DigiLoan.IntegrationTests` and database fixture        |
 
 ## Key Workflows
 
@@ -289,13 +289,13 @@ flowchart LR
 
 ### Architectural Responsibilities
 
-| Layer | Responsibility |
-|---|---|
-| `DigiLoan.Domain` | Core domain entities, enums, and business rules |
-| `DigiLoan.Application` | Application services, use cases, interfaces, DTOs, and query models |
-| `DigiLoan.Infrastructure` | EF Core persistence, repository implementations, Identity integration, and supporting infrastructure |
-| `DigiLoan.Api` | Controllers, HTTP routing, dependency injection, authentication configuration, and API pipeline |
-| `DigiLoan.IntegrationTests` | Database-backed integration tests for repository and query behavior |
+| Layer                       | Responsibility                                                                                       |
+| --------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `DigiLoan.Domain`           | Core domain entities, enums, and business rules                                                      |
+| `DigiLoan.Application`      | Application services, use cases, interfaces, DTOs, and query models                                  |
+| `DigiLoan.Infrastructure`   | EF Core persistence, repository implementations, Identity integration, and supporting infrastructure |
+| `DigiLoan.Api`              | Controllers, HTTP routing, dependency injection, authentication configuration, and API pipeline      |
+| `DigiLoan.IntegrationTests` | Database-backed integration tests for repository and query behavior                                  |
 
 ### Dependency Direction
 
@@ -313,44 +313,13 @@ This separation makes it easier to understand, test, and change individual parts
 
 The following is a conceptual overview of the repository's main responsibilities.
 
-```text
-DigiLoan/
-├── src/
-│   ├── DigiLoan.Domain/
-│   │   ├── Entities/
-│   │   │   ├── UserAccount.cs
-│   │   │   ├── LoanApplication.cs
-│   │   │   └── LedgerEntry.cs
-│   │   └── Enums/
-│   │
-│   ├── DigiLoan.Application/
-│   │   ├── Common/
-│   │   │   ├── Interfaces/
-│   │   │   └── Models/
-│   │   └── Features/
-│   │       ├── LoanEligibility/
-│   │       └── ...
-│   │
-│   ├── DigiLoan.Infrastructure/
-│   │   ├── Identity/
-│   │   ├── Persistence/
-│   │   └── Repositories/
-│   │
-│   └── DigiLoan.Api/
-│       ├── Controllers/
-│       ├── Program.cs
-│       └── ...
-│
-├── tests/
-│   └── DigiLoan.IntegrationTests/
-│       ├── LedgerEntryRepositoryTests.cs
-│       └── ...
-│
-├── DigiLoan.slnx
-└── README.md
-```
-
-> This tree is a simplified guide to the main project responsibilities, not a complete file listing. Refer to the repository for the exact current folder structure.
+| Project                     | Responsibility                                                                                                                                              |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DigiLoan.Domain`           | Core domain entities, enums, and business rules for user accounts, loan applications, and ledger entries.                                                   |
+| `DigiLoan.Application`      | Application use cases, service interfaces, DTOs, loan eligibility, credit scoring abstractions, account overview logic, and transaction history pagination. |
+| `DigiLoan.Infrastructure`   | EF Core persistence, SQL Server integration, repository implementations, ASP.NET Core Identity integration, and JWT token generation.                       |
+| `DigiLoan.Api`              | API controllers, authentication and authorization, dependency injection, middleware, Swagger/Scalar documentation, and application startup configuration.   |
+| `DigiLoan.IntegrationTests` | Integration tests for database and repository behavior, including ledger entry pagination, total counts, newest-first ordering, and page boundaries.        |
 
 ### Important Domain Models
 
@@ -372,22 +341,22 @@ Represents the ASP.NET Core Identity user stored in the Identity tables. Identit
 
 ## Technology Stack
 
-| Technology | Purpose |
-|---|---|
-| C# | Backend programming language |
-| .NET 10 | Backend runtime and SDK target |
-| ASP.NET Core Web API | HTTP API and request handling |
-| ASP.NET Core Identity | User management and authentication |
-| JWT Bearer Authentication | Token-based API authentication |
-| Entity Framework Core | Object-relational mapping and database access |
-| SQL Server | Relational database |
-| React | Frontend user interface |
-| Axios | HTTP requests and authentication headers |
-| Zustand | Frontend authentication state |
-| TanStack React Query | Server-state fetching, caching, and invalidation |
-| Recharts | Dashboard charts and transaction trends |
-| Swagger / Scalar | API exploration and documentation |
-| xUnit | Automated testing |
+| Technology                | Purpose                                          |
+| ------------------------- | ------------------------------------------------ |
+| C#                        | Backend programming language                     |
+| .NET 10                   | Backend runtime and SDK target                   |
+| ASP.NET Core Web API      | HTTP API and request handling                    |
+| ASP.NET Core Identity     | User management and authentication               |
+| JWT Bearer Authentication | Token-based API authentication                   |
+| Entity Framework Core     | Object-relational mapping and database access    |
+| SQL Server                | Relational database                              |
+| React                     | Frontend user interface                          |
+| Axios                     | HTTP requests and authentication headers         |
+| Zustand                   | Frontend authentication state                    |
+| TanStack React Query      | Server-state fetching, caching, and invalidation |
+| Recharts                  | Dashboard charts and transaction trends          |
+| Swagger / Scalar          | API exploration and documentation                |
+| xUnit                     | Automated testing                                |
 
 ## API Endpoints
 
@@ -395,26 +364,26 @@ The following endpoints reflect the routes discussed in the project. Check the c
 
 ### Account Overview
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| `GET` | `/api/account/overview` | Retrieve the authenticated user's account overview |
+| Method | Endpoint                | Purpose                                            |
+| ------ | ----------------------- | -------------------------------------------------- |
+| `GET`  | `/api/account/overview` | Retrieve the authenticated user's account overview |
 
 The overview response includes account information, summary totals, daily trend data, and recent transactions.
 
 ### Loan Disbursement and Quotes
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| `POST` | `/api/disburse/quote` | Request a loan quote |
-| `GET` | `/api/disburse/applications` | Retrieve loan applications available through the endpoint |
-| `POST` | `/api/disburse/disburse` | Execute the implemented disbursement workflow |
+| Method | Endpoint                     | Purpose                                                   |
+| ------ | ---------------------------- | --------------------------------------------------------- |
+| `POST` | `/api/disburse/quote`        | Request a loan quote                                      |
+| `GET`  | `/api/disburse/applications` | Retrieve loan applications available through the endpoint |
+| `POST` | `/api/disburse/disburse`     | Execute the implemented disbursement workflow             |
 
 These endpoints are protected according to the controller's authorization configuration. The request body and the exact business rules should be taken from the corresponding controller and DTO definitions.
 
 ### Development Seed Data
 
-| Method | Endpoint | Purpose |
-|---|---|---|
+| Method | Endpoint             | Purpose                   |
+| ------ | -------------------- | ------------------------- |
 | `POST` | `/api/dev/seed-data` | Populate development data |
 
 This endpoint is for development support, not a general-purpose production operation.
@@ -472,12 +441,12 @@ DigiLoan instead requests only the selected page from the backend. This allows t
 
 The application uses a generic `PagedResult<T>` model with the following information:
 
-| Property | Purpose |
-|---|---|
-| `Items` | The records returned for the current page |
+| Property     | Purpose                                            |
+| ------------ | -------------------------------------------------- |
+| `Items`      | The records returned for the current page          |
 | `TotalCount` | Total number of matching records before pagination |
-| `Page` | Current page number |
-| `PageSize` | Maximum number of records requested per page |
+| `Page`       | Current page number                                |
+| `PageSize`   | Maximum number of records requested per page       |
 
 The transaction-history service returns a paged DTO result rather than exposing persistence entities directly to the API.
 
@@ -500,11 +469,11 @@ The repository returns the selected entities together with the total count. The 
 
 Suppose 25 transactions match the selected filters and the page size is 10.
 
-| Page | Returned records | Expected count |
-|---|---|---:|
-| Page 1 | Records 1–10 | 10 |
-| Page 2 | Records 11–20 | 10 |
-| Page 3 | Records 21–25 | 5 |
+| Page   | Returned records | Expected count |
+| ------ | ---------------- | -------------: |
+| Page 1 | Records 1–10     |             10 |
+| Page 2 | Records 11–20    |             10 |
+| Page 3 | Records 21–25    |              5 |
 
 The total count remains `25` on each page, even though the number of returned items varies on the last page.
 
@@ -530,4 +499,3 @@ The test verifies that:
 The test uses a database fixture so that repository behavior is exercised against a database rather than being replaced with a mock of the same repository interface.
 
 This distinction matters: a repository integration test should test the actual repository query and persistence behavior. A mocked repository is more appropriate for an isolated application-service unit test.
-
