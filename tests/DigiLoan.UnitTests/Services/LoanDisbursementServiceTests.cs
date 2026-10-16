@@ -41,7 +41,42 @@ public class LoanDisbursementServiceTests
        _mockLogger.Object
     );
 
+    [Fact]
+    public async Task QuoteAsync_ReturnsPricings_WithoutChangingAnything()
+    {
+        var account = new UserAccount
+        {
+            Id = _accountId,
+            UserId = _userId,
+            CurrentBalance = 10000
+        };
 
+        _mockAccount.Setup(e => e.GetByUserIdAsync(_userId)).ReturnsAsync(account);
+        _mockCreditScoring.Setup(e => e.EvaluateResultAsync(_userId)).ReturnsAsync(new EligibilityResult
+        {
+            IsEligible = true,
+            CreditScore = 90,
+            MaxApprovedAmount = 25000,
+            AverageDailyBalance = 15000,
+            MaxLoanTenor = 4,
+            InterestRate = 12,
+        });
+
+        var request = new LoanApplicationRequest
+        {
+            RequestedAmount = 15000m,
+            RequestedLoanTenor = 3
+        };
+        var service = CreateService();
+        var result = await service.QuoteAsync(_userId, request);
+
+        Assert.Equal(12, result.InterestPercentage);
+        Assert.Equal(4, result.TenorMonths);
+
+        _mockLedger.Verify(l => l.AddAsync(It.IsAny<LedgerEntry>()));
+        _mockApplication.Verify(a => a.AddAsync(It.IsAny<LoanApplication>()));
+        Assert.Equal(10000m, account.CurrentBalance);
+    }
     [Fact]
     public async Task DisburseLoanAsync_WhenIneligible_ThrowsInvalidOperationException()
     {
