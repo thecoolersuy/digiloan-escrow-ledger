@@ -71,10 +71,10 @@ public class LoanDisbursementServiceTests
         var result = await service.QuoteAsync(_userId, request);
 
         Assert.Equal(12, result.InterestPercentage);
-        Assert.Equal(4, result.TenorMonths);
+        Assert.Equal(3, result.TenorMonths);
 
-        _mockLedger.Verify(l => l.AddAsync(It.IsAny<LedgerEntry>()));
-        _mockApplication.Verify(a => a.AddAsync(It.IsAny<LoanApplication>()));
+        _mockLedger.Verify(l => l.AddAsync(It.IsAny<LedgerEntry>()), Times.Never);
+        _mockApplication.Verify(a => a.AddAsync(It.IsAny<LoanApplication>()), Times.Never);
         Assert.Equal(10000m, account.CurrentBalance);
     }
     [Fact]

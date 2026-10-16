@@ -56,7 +56,7 @@ public class LoanDisbursementService : ILoanDisbursementService
             RepaymentDate = quote.RepaymentDate
         };
 
-        await _application.AddAsync(application);
+
 
         _logger.LogInformation("LoanApplication created for account {account.Id} : amount = {application.RequestedAmount}", account.Id, application.RequestedAmount);
 
@@ -64,6 +64,9 @@ public class LoanDisbursementService : ILoanDisbursementService
         {
             await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
+
+                await _application.AddAsync(application);
+
                 await _ledgerEntryRepository.AddAsync(new LedgerEntry
                 {
                     SourceAccountId = SystemAccounts.EscrowAccount,
@@ -72,16 +75,26 @@ public class LoanDisbursementService : ILoanDisbursementService
                     TransactionType = TransactionType.LoanDisbursement,
                     CreatedAtUtc = DateTime.UtcNow
                 });
+                account.CurrentBalance += quote.RequestedAmount;
+                _account.Update(account);
+
+                application.Status = LoanStatus.Disbursed;
             });
 
-            account.CurrentBalance += quote.RequestedAmount;
-            _account.Update(account);
 
-            application.Status = LoanStatus.Disbursed;
         }
         catch (ConcurrencyException ex)
         {
-            _logger.LogWarning("A concurrency conflict occured while processing loan disbursement: {Message}", ex.Message);
+            _logger.LogWarning(
+       ex,
+       "Concurrency conflict during loan disbursement. " +
+       "UserId: {UserId}, AccountId: {AccountId}, " +
+       "LoanAmount: {LoanAmount}",
+       userId,
+       account.Id,
+       quote.RequestedAmount);
+
+            throw;
         }
 
         _logger.LogInformation("Loan {ApplicationId} disbursed successfully", application.Id);
@@ -104,7 +117,7 @@ public class LoanDisbursementService : ILoanDisbursementService
         var account = await _account.GetByUserIdAsync(userId)
             ?? throw new InvalidOperationException("No account found for this user.");
 
-        var existing = await _application.GetByAccountIdAsync(account.Id);
+        var existing = await _application.GetByAccountIdAsync(account.Id) ?? Enumerable.Empty<LoanApplication>();
         var activeLoan = existing.FirstOrDefault(a => a.BlocksNewApplications);
 
         if (activeLoan is not null)

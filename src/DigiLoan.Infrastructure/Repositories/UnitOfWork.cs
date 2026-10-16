@@ -3,6 +3,7 @@ using DigiLoan.Application.Common.Exceptions;
 using DigiLoan.Application.Common.Interfaces;
 using DigiLoan.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 
 namespace DigiLoan.Infrastructure.Repositories;
@@ -11,10 +12,12 @@ public class UnitOfWork : IUnitOfWork
 {
 
     private readonly AppDbContext _context;
+    private readonly ILogger<IUnitOfWork> _logger;
 
-    public UnitOfWork(AppDbContext context)
+    public UnitOfWork(AppDbContext context, ILogger<IUnitOfWork> logger)
     {
         _context = context;
+        _logger = logger;
     }
     public Task<int> SaveChangesAsync() =>
         _context.SaveChangesAsync();
@@ -33,13 +36,25 @@ public class UnitOfWork : IUnitOfWork
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 await transaction.RollbackAsync();
+
+                foreach (var entry in ex.Entries)
+                {
+                    _logger.LogWarning(
+                        ex,
+                        "EF Core concurrency conflict on entity {EntityType}. " +
+                        "Entity state: {EntityState}",
+                        entry.Metadata.Name,
+                        entry.State);
+                }
+
                 throw new ConcurrencyException(
-                   "The data was modified by another request"
+                    "The data was modified by another request."
                 );
             }
+            ;
         });
     }
 
