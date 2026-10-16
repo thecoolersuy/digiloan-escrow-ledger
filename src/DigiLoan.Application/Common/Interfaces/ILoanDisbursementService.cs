@@ -5,4 +5,5 @@ namespace DigiLoan.Application.Common.Interfaces;
 public interface ILoanDisbursementService
 {
     Task<LoanApplicationResult> DisburseLoanAsync(Guid userId, LoanApplicationRequest request);
+    Task<LoanQuoteResult> QuoteAsync(Guid userId, LoanApplicationRequest request);
 }

@@ -97,6 +97,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddScoped<IUserIdentityService, UserIdentityService>();
 builder.Services.AddScoped<ITransactionHistoryService, TransactionHistoryService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ILoanHistoryService, LoanHistoryService>();
 
 
 

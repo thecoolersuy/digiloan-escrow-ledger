@@ -12,5 +12,5 @@ public interface ILoanApplicationRepository
 
     Task<LoanApplication?> GetByIdAsync(Guid id);
 
-    Task<List<LoanApplication>> GetByAccountIdAsync(Guid accountId);
+    public Task<List<LoanApplication>> GetByAccountIdAsync(Guid accountId);
 }

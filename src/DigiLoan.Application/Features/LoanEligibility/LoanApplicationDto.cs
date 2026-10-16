@@ -14,9 +14,3 @@ public record LoanApplicationDto
 
     public DateTime RepaymentDate;
 }
-
-public class LoanApplicationsDto
-{
-    public List<LoanApplicationDto> Items = new();
-    public bool HasActiveLoan;
-}
