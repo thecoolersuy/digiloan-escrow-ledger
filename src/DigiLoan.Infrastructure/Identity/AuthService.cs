@@ -114,7 +114,12 @@ public class AuthService : IAuthService
             _dbContext.UserAccounts.Add(account);
             await _dbContext.SaveChangesAsync();
         }
-        await _dataSeeder.SeedAsync(user.Id, profile);
+        else if (string.IsNullOrWhiteSpace(user.FullName))
+        {
+            user.FullName = fullName;
+            await _userManager.UpdateAsync(user);
+        }
+        await _dataSeeder.SeedAsync(user.Id, user.FullName, profile);
         var token = _tokenService.GenerateToken(user.Id, user.Email!);
         return new AuthResponse
         {

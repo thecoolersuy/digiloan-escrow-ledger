@@ -12,11 +12,13 @@ public class DevController : ControllerBase
 {
     private readonly IDataSeederService _seederService;
     private readonly IWebHostEnvironment _env;
+    private readonly IUserIdentityService _identity;
 
-    public DevController(IDataSeederService seederService, IWebHostEnvironment environment)
+    public DevController(IDataSeederService seederService, IWebHostEnvironment environment, IUserIdentityService identity)
     {
         _seederService = seederService;
         _env = environment;
+        _identity = identity;
     }
 
     [Authorize]
@@ -31,7 +33,8 @@ public class DevController : ControllerBase
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userIdClaim is null || !Guid.TryParse(userIdClaim, out var userId))
             return Unauthorized();
-        await _seederService.SeedAsync(userId, profile);
+        var fullName = await _identity.GetFullNameAsync(userId);
+        await _seederService.SeedAsync(userId, fullName, profile);
         return Ok(new { mesage = "Seed data generated successfully" });
 
     }

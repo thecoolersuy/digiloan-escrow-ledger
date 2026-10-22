@@ -7,5 +7,5 @@ public enum SeedProfile
 }
 public interface IDataSeederService
 {
-    public Task SeedAsync(Guid userId, SeedProfile profile);
+    public Task SeedAsync(Guid userId, string fullName , SeedProfile profile);
 }

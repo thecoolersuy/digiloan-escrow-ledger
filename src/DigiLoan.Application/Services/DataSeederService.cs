@@ -33,7 +33,7 @@ public class DataSeederService : IDataSeederService
         _logger = logger;
     }
 
-    public async Task SeedAsync(Guid userId, SeedProfile profile)
+    public async Task SeedAsync(Guid userId,string fullName, SeedProfile profile)
     {
         var account = await _userAccount.GetByUserIdAsync(userId) ?? throw new InvalidOperationException("No account found for this user");
         _logger.LogInformation("Seeding {Profile} profile for account {AccountId}", profile, account.Id);
