@@ -2,3 +2,5 @@
 **/obj/
 .env
 *.db
+appsettings.Demo.json
+publish/

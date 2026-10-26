@@ -40,7 +40,7 @@ builder.Services.AddSwaggerGen(options =>
             });
 
 });
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sql => sql.EnableRetryOnFailure()));
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
 {
@@ -114,11 +114,13 @@ builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
 });
+
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new[] { "http://localhost:5173" };
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactDev", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -129,7 +131,7 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
-app.UseCors("AllowReactDev");
+app.UseCors("AllowFrontend");
 app.UseExceptionHandler();
 
 using (var scope = app.Services.CreateScope())
@@ -153,6 +155,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+app.MapGet("/health", ()=> Results.Ok(new{status ="ok"}));
 
 
 
