@@ -1,10 +1,12 @@
 # DigiLoan — Digital Micro-Lending & Escrow Ledger
 
 > **Note**
->The Problem Statement
+>
+> **The Problem Statement**
+>
 > “I want to apply for a loan digitally, but I need to know whether I’m eligible, how much I can borrow, and where the money goes after approval. The system needs to keep accurate account balances and a clear record of every transaction.”
 
->digiLoan — Digital Micro-Lending & Escrow Ledger, where borrowers check their eligibility, request loans, and track their balances. Approved loans are disbursed from a centralized escrow funding account, every money movement is recorded in a transaction ledger, and users can view their loan details and transaction history.
+>digiloan — Digital Micro-Lending & Escrow Ledger, where borrowers check their eligibility, request loans, and track their balances. Approved loans are disbursed from a centralized escrow funding account, every money movement is recorded in a transaction ledger, and users can view their loan details and transaction history.
 
 DigiLoan is a digital micro-lending application built with **.NET, ASP.NET Core Web API, Entity Framework Core, SQL Server, ASP.NET Core Identity, JWT authentication, and React**.
 
